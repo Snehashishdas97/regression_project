@@ -55,7 +55,8 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: pytest-results-1
-          path: junit/test-results-1.xml
+          path: junit/test-results.xml
+
       - name: Push logs to Git
         run: |
           git config --global user.email "snehashish.das97@gmail.com"
@@ -66,31 +67,3 @@ jobs:
           git add build_test_run.log
           git commit -m "Update main.log"
           git push origin main
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-        
-      - name: Docker Login
-        uses: docker/login-action@v3.0.0
-        with:
-          username: ${{ secrets.DOCKERUSER }}
-          password: ${{ secrets.DOCKERPAT }}
-        
-      - name: Deploy to Docker Hub
-        run: |
-          docker build -t snehashish97/build-train-test:latest .
-          #docker images
-          docker push snehashish97/build-train-test:latest
-
-      - name: Deploy to Google Cloud Run
-        run: |
-          # Deploy the Docker image to Google Cloud Run
-          gcloud auth activate-service-account --key-file=${{ secrets.GCP_JSON }}
-          gcloud config set project devops-cbd3375
-          gcloud run deploy regression-model \
-            --image=$ {{ secrets.DOCKERUSER }}/build-train-test:latest \
-            --platform=managed --region=us-central1 --allow-unauthenticated
