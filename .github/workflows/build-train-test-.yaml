@@ -58,7 +58,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+        
+      - name: Docker Login
+        run: |
+          docker login -u ${{ secrets.DOCKERHUBUSER }} -p ${{ secrets.DOCKERPAT }}
+        
       - name: Deploy to Docker Hub
         run: |
           docker build -t snehashish97/build-train-test:latest .
