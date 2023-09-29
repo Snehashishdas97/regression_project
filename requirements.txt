@@ -2,3 +2,4 @@ numpy
 tensorflow
 pytest
 pytest-cov
+coverage
