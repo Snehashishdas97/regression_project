@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="4" time="3.420" timestamp="2023-09-29T09:01:55.893041" hostname="snehashish-virtual-machine"><testcase classname="test_regression_project" name="test_regression_data_preparation" time="0.001" /><testcase classname="test_regression_project" name="test_regression_model_creation" time="0.482" /><testcase classname="test_regression_project" name="test_regression_model_training" time="0.463"><failure message="assert 7.060244560241699 &lt; 0.1">regression_data = (array([[5.48813504e-01],
+       [7.15189366e-01],
+       [6.02763376e-01],
+       [5.44883183e-01],
+       [4.2365479...2.51379489],
+       [1.19438701],
+       [1.85012794],
+       [2.79659873],
+       [1.47661446],
+       [2.4840165 ]]))
+regression_model = &lt;keras.src.engine.sequential.Sequential object at 0x7f2134394be0&gt;
+
+    def test_regression_model_training(regression_data, regression_model):
+        X_train, y_train = regression_data
+        loss = regression_model.evaluate(X_train, y_train)
+&gt;       assert loss &lt; 0.1  # Adjust as needed
+E       assert 7.060244560241699 &lt; 0.1
+
+test_regression_project.py:32: AssertionError</failure></testcase><testcase classname="test_regression_project" name="test_regression_model_prediction" time="0.434" /></testsuite></testsuites>
