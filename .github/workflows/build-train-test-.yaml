@@ -59,8 +59,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         
-      - name: Login to Docker Hub
-        run: echo ${{ secrets.DOCKERPAT }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
+      - name: Docker Login
+        uses: docker/login-action@v3.0.0
+        with:
+          username: ${{ secrets.DOCKERUSER }}
+          password: ${{ secrets.DOCKERPAT }}
         
       - name: Deploy to Docker Hub
         run: |
