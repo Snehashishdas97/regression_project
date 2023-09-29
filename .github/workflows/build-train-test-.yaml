@@ -61,10 +61,9 @@ jobs:
 
       - name: Deploy to Docker Hub
         run: |
-          # Build a Docker image and push it to Docker Hub
-          docker build -t ${{ secrets.DOCKERUSER }}/build-train-test:latest .
-          echo ${{ secrets.DOCKERPASS }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
-          docker push ${{ secrets.DOCKERUSER }}/build-train-test:latest
+          docker build -t snehashish97/build-train-test:latest .
+          #docker images
+          docker push snehashish97/build-train-test:latest
 
       - name: Deploy to Google Cloud Run
         run: |
