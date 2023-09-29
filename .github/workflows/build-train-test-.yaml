@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v2
         
       - name: Login to Docker Hub
-        run: echo "$DOCKERPAT" | docker login -u "$DOCKERUSER" --password-stdin
+        run: echo $DOCKERPAT | docker login -u $DOCKERUSER --password-stdin
         env:
         DOCKERPAT: ${{ secrets.DOCKERPAT}}
         DOCKERUSER: ${{ secrets.DOCKERUSER }}
