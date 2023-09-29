@@ -1,0 +1,54 @@
+name: Regression Project CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Set your main branch name
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10  
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt  
+
+      - name: Build and Train Model
+        run: |
+          rm -rf main.log
+          python3 main.py >> main.log
+
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with: 
+          python-version: '3.10' 
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt  # Add any necessary requirements
+
+      - name: Run Tests
+        run: |
+          rm -rf build_test_run.log
+          pytest >> build_test_run.log
+          python3 test_regression_project.py >> build_test_run.log
+          pytest test_regressiytest test_regression_project.py --doctest-modules --junitxml=junit/test-results.html --cov=com  --cov-report=html
+          
