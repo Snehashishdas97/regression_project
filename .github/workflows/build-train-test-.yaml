@@ -49,7 +49,7 @@ jobs:
           rm -rf build_test_run.log
           pytest >> build_test_run.log
           python3 test_regression_project.py >> build_test_run.log
-          pytest test_regression_project.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=html
+          pytest test_regression_project.py --doctest-modules --junitxml=junit/test-results.xml --cov=src --cov-report=html
       
       - name: Upload pytest test results
         uses: actions/upload-artifact@v3
