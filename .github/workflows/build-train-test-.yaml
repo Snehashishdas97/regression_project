@@ -51,3 +51,26 @@ jobs:
           python3 test_regression_project.py >> build_test_run.log
           pytest test_regression_project.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=html
       
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Deploy to Docker Hub
+        run: |
+          # Build a Docker image and push it to Docker Hub
+          docker build -t ${{ secrets.DOCKERUSER }}/build-train-test:latest .
+          echo ${{ secrets.DOCKERPASS }} | docker login -u ${{ secrets.DOCKERUSER }} --password-stdin
+          docker push ${{ secrets.DOCKERUSER }}/build-train-test:latest
+
+      - name: Deploy to Google Cloud Run
+        run: |
+          # Deploy the Docker image to Google Cloud Run
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_JSON }}
+          gcloud config set project devops-cbd3375
+          gcloud run deploy regression-model \
+            --image=$ {{ secrets.DOCKERUSER }}/build-train-test:latest \
+            --platform=managed --region=us-central1 --allow-unauthenticated
