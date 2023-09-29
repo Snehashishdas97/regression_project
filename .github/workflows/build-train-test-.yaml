@@ -71,5 +71,6 @@ jobs:
           git remote add origin https://${{secrets.GITPAT}}@github.com/Snehashishdas97/regression_project.git
           git add main.log
           git add build_test_run.log
+          git add htmlcov/
           git commit -m "Update main.log"
           git push origin main
