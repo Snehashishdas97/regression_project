@@ -56,6 +56,12 @@ jobs:
         with:
           name: pytest-results-1
           path: junit/test-results.xml
+          
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage.xml
 
       - name: Push logs to Git
         run: |
