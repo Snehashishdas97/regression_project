@@ -61,3 +61,5 @@ jobs:
           git remote remove origin
           git remote add origin https://${{ secrets.GITPAT }}@github.com/Snehashishdas97/regression_project.git
           git push origin main
+          echo "GH_PAT: ${{ secrets.GITPAT }}"
+          git remote -v
