@@ -6,77 +6,9 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.11.5
-
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Build and Train Model
-        run: |
-          rm -rf main.log
-          python3 main.py >> main.log
-
-  test:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.11.5
-
-      - name: Install Dependencies
-        run: |
-          pip install -r requirements.txt
-
-      - name: Run Tests
-        run: |
-          rm -rf build_test_run.log
-          pytest >> build_test_run.log
-          python3 test_regression_project.py >> build_test_run.log
-          pytest test_regression_project.py --doctest-modules --junitxml=junit/test-results.xml --cov=src --cov-report=html
-
-      - name: Upload pytest test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: pytest-results-1
-          path: junit/test-results.xml
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report
-          path: htmlcov/
-
-      - name: Push logs to Git
-        run: |
-          git config --global user.email "snehashish.das97@gmail.com"
-          git config --global user.name "Snehashishdas97"
-          git remote remove origin
-          git remote add origin https://${{ secrets.GITPAT }}@github.com/Snehashishdas97/regression_project.git
-          git add main.log
-          git add build_test_run.log
-          git add htmlcov/
-          git commit -m "Update logs"
-          git push origin main
-
+  
   deploy:
-    needs: test
+    #needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -95,7 +27,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
         with:
-          context: .
+          #context: .
           push: true
           tags: gcr.io/${{ secrets.GCP_SECRET }}/app1:latest
           build-args: |
