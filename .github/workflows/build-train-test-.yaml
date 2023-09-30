@@ -22,7 +22,6 @@ jobs:
       - name: Configure docker for GCP
         run: |
           gcloud auth configure-docker
-          docker system prune -af
           
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
