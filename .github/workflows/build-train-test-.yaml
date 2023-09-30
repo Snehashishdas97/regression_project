@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
@@ -21,7 +24,6 @@ jobs:
         run: gcloud auth configure-docker
 
       - name: Build and push Docker image
-        context: .
         run: |
           docker build -t gcr.io/devops-cbd3375/app1:latest .
           docker push gcr.io/devops-cbd3375/app1:latest
