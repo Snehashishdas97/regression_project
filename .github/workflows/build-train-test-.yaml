@@ -74,3 +74,36 @@ jobs:
           git add htmlcov/
           git commit -m "Update main.log"
           git push origin main
+  deploy:
+    deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          service_account_key: ${{ secrets.GCP_SECRET }}
+          export_default_credentials: true
+
+        - name: Configure docker for GCP
+          run: gcloud auth configure-docker
+
+        - name: Build and push Docker image
+          uses: docker/build-push-action@v2
+          with:
+            context: .
+            push: true
+            tags: gcr.io/${{ secrets.GCP_PROJECT }}/app1:latest
+            build-args: |
+              HTTP_PORT=5000
+        - name: Deploy to Cloud Run
+          uses: google-github-actions/deploy-cloudrun@main
+          with:
+            image: gcr.io/${{ secrets.GCP_PROJECT }}/app1:latest
+            service: app1
+            region: us-west2
+            platform: managed
+            allow-unauthenticated: true
+            env_vars: |
+              FOO=bar
+              ZIP=zap
