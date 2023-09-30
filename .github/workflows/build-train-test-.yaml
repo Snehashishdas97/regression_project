@@ -25,14 +25,14 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build -t gcr.io/devops-cbd3375/app1:latest .
-          docker push gcr.io/devops-cbd3375/app1:latest
+          docker build -t gcr.io/devops-cbd3375/build-train-test:latest .
+          docker push gcr.io/devops-cbd3375/build-train-test:latest
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          image: gcr.io/devops-cbd3375/app1:latest
-          service: app1
+          image: gcr.io/devops-cbd3375/build-train-test:latest
+          service: build-train-test
           region: us-west2
           platform: managed
           allow-unauthenticated: true
