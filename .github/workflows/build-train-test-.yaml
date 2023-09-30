@@ -76,6 +76,7 @@ jobs:
           git push origin main
 
   deploy:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
@@ -83,7 +84,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
-          service_account_key: ${{ secrets.GCP_SECRET }}
+          service_account_key: ${{ secrets.GCP_JSON }}
           export_default_credentials: true
 
       - name: Configure docker for GCP
