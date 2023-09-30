@@ -83,7 +83,7 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
         with:
-          project_id: ${{ secrets.GCP_PROJECT }}
+          project_id: ${{ secrets.GCP_SECRET }}
           service_account_key: ${{ secrets.GCP_JSON }}
           export_default_credentials: true
 
@@ -95,14 +95,14 @@ jobs:
         with:
           context: .
           push: true
-          tags: gcr.io/${{ secrets.GCP_PROJECT }}/app1:latest
+          tags: gcr.io/${{ secrets.GCP_SECRET }}/app1:latest
           build-args: |
             HTTP_PORT=5000
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          image: gcr.io/${{ secrets.GCP_PROJECT }}/app1:latest
+          image: gcr.io/${{ secrets.GCP_SECRET }}/app1:latest
           service: app1
           region: us-west2
           platform: managed
