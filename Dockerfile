@@ -1,16 +1,14 @@
-# Use the official Python image as the base image
-FROM python:3.10-slim
+FROM python:3.9  
 
-# Set the working directory inside the container
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy your Python script and any necessary files to the container
-COPY main.py /app/
-COPY src/ /app/src/
-COPY requirements.txt /app/
+# Copy the local code to the container
+COPY . /app
 
-# Install any dependencies specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install any project dependencies (if you have a requirements.txt file)
+RUN pip install numpy tensorflow flask gunicorn
 
-# Define the entry point for your application
-CMD ["python", "main.py"]
+EXPOSE 5000
+# Run your Python script
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 main:app
